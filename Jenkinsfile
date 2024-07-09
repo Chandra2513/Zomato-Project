@@ -21,8 +21,8 @@ pipeline{
 		stage("SonarQube Code Analysis"){
 			steps{
 				withSonarQubeEnv('sonar-scanner'){
-					sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=zomato-test-project \
-                    -Dsonar.projectKey=zomato-test-project '''
+					sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=zomato \
+                    -Dsonar.projectKey=zomato '''
 				}
 			}
 		}
@@ -56,20 +56,20 @@ pipeline{
 				script{
 				withDockerRegistry(credentialsId: 'docker-hub', toolName: 'docker'){
 					sh "docker build -t cloudzomato . "
-					sh "docker tag cloudzomato thanish/cloudzomato:latest"
-					sh "docker push thanish/cloudzomato:latest"
+					sh "docker tag cloudzomato chandrapavansai/cloudzomato:latest"
+					sh "docker push chandrapavansai/cloudzomato:latest"
 						}
 					}
 				}
 			}
 		stage("TRIVY is Image Scanning"){
 			steps{
-				sh "trivy image thanish/cloudzomato:latest >trivy.txt"
+				sh "trivy image chandrapavansai/cloudzomato:latest >trivy.txt"
 			}
 		}
 		stage("Creating Docker Container "){
 			steps{
-				sh 'docker run -d --name zomato-app -h zomato -p 3000:3000 thanish/cloudzomato:latest'
+				sh 'docker run -d --name zomato-app -h zomato -p 3000:3000 chandrapavansai/cloudzomato:latest'
 			}
 		}
 	}
