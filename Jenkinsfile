@@ -15,12 +15,12 @@ pipeline{
 		}
 		stage('Code Checkout From Git'){
 			steps{
-				git branch: 'main', url: 'https://github.com/Cloud-Gen-DevOps-Projects/Zomato-Project.git'
+				git branch: 'main', url: 'https://github.com/Chandra2513/Zomato-Project.git'
 			}
 		}
 		stage("SonarQube Code Analysis"){
 			steps{
-				withSonarQubeEnv('sonar-server'){
+				withSonarQubeEnv('sonar-scanner'){
 					sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=zomato \
                     -Dsonar.projectKey=zomato '''
 				}
